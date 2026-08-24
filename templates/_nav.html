@@ -1,0 +1,32 @@
+{% from "_icons.html" import icon %}
+<header class="site-header" id="site-header">
+  <div class="header-inner">
+    <a href="{{ url_for('index') }}#home" class="brand">
+      <span class="brand-mark">{{ profile.monogram }}</span>
+      <span class="brand-name">{{ profile.short_name }}<span class="brand-dot">.</span></span>
+    </a>
+
+    <nav class="primary-nav" id="primary-nav" aria-label="Primary">
+      <ul>
+        {% for link in nav_links %}
+        <li><a href="{{ url_for('index') }}#{{ link.id }}" class="nav-link" data-section="{{ link.id }}">{{ link.label }}</a></li>
+        {% endfor %}
+      </ul>
+    </nav>
+
+    <div class="header-actions">
+      <button type="button" class="theme-toggle" id="theme-toggle" aria-label="Switch color theme" aria-pressed="false">
+        <span class="theme-toggle-icon icon-moon">{{ icon('moon', 18) }}</span>
+        <span class="theme-toggle-icon icon-sun">{{ icon('sun', 18) }}</span>
+      </button>
+      <a class="btn btn-primary btn-small" href="{{ url_for('resume_download') }}">
+        {{ icon('download', 16) }}<span>Resume</span>
+      </a>
+      <button type="button" class="menu-toggle" id="menu-toggle" aria-label="Open menu" aria-expanded="false" aria-controls="primary-nav">
+        <span class="icon-menu">{{ icon('menu', 22) }}</span>
+        <span class="icon-close">{{ icon('x', 22) }}</span>
+      </button>
+    </div>
+  </div>
+</header>
+<div class="nav-scrim" id="nav-scrim"></div>

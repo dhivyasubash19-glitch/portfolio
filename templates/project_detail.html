@@ -1,0 +1,121 @@
+{% extends "base.html" %}
+{% from "_icons.html" import icon %}
+
+{% block title %}{{ project.title }} | {{ profile.name }}{% endblock %}
+{% block description %}{{ project.outcome_line }}{% endblock %}
+
+{% block content %}
+<section class="case-hero">
+  <div class="container">
+    <p class="case-breadcrumb">
+      <a href="{{ url_for('index') }}">Home</a> {{ icon('arrow-right', 12) }}
+      <a href="{{ url_for('index') }}#projects">Projects</a> {{ icon('arrow-right', 12) }}
+      <span>{{ project.title }}</span>
+    </p>
+    <h1 class="case-title">{{ project.title }}</h1>
+    <p class="case-outcome">{{ project.outcome_line }}</p>
+    <div class="case-meta-row">
+      <span class="case-badge">{{ project.category }}</span>
+      <span class="case-badge">{{ project.status }}</span>
+    </div>
+    <div class="hero-cta" style="margin-bottom:0;">
+      {% if project.github_url %}
+      <a class="btn btn-outline" href="{{ project.github_url }}" target="_blank" rel="noopener">{{ icon('github', 16) }}<span>View Code</span></a>
+      {% endif %}
+      {% if project.demo_url %}
+      <a class="btn btn-primary" href="{{ project.demo_url }}" target="_blank" rel="noopener">{{ icon('external', 16) }}<span>Live Demo</span></a>
+      {% endif %}
+    </div>
+  </div>
+</section>
+
+<div class="container">
+  <div class="case-body">
+    <div>
+      {% if project.context %}
+      <div class="case-block reveal">
+        <h2>Context</h2>
+        <p>{{ project.context }}</p>
+      </div>
+      {% endif %}
+
+      <div class="case-block reveal">
+        <h2>Problem statement</h2>
+        <p>{{ project.problem }}</p>
+      </div>
+
+      <div class="case-block reveal">
+        <h2>Approach &amp; solution</h2>
+        <p>{{ project.solution }}</p>
+      </div>
+
+      <div class="case-block reveal">
+        <h2>My role</h2>
+        <p>{{ project.role }}</p>
+      </div>
+
+      <div class="case-block reveal">
+        <h2>Dataset</h2>
+        <span class="case-placeholder">[ADD DATASET SOURCE]</span>
+      </div>
+
+      <div class="case-block reveal">
+        <h2>Data preparation</h2>
+        <span class="case-placeholder">[ADD PREPROCESSING STEPS FROM NOTEBOOK]</span>
+      </div>
+
+      <div class="case-block reveal">
+        <h2>Models tested &amp; evaluation</h2>
+        {% if project.result %}
+        <p><strong>Reported result:</strong> {{ project.result }}. <span class="case-placeholder">[ADD CONFUSION MATRIX / EVALUATION EVIDENCE]</span></p>
+        {% else %}
+        <span class="case-placeholder">[ADD VERIFIED METRIC FROM PROJECT REPORT]</span>
+        {% endif %}
+      </div>
+
+      <div class="case-block reveal">
+        <h2>Interface</h2>
+        <span class="case-placeholder">[ADD INTERFACE SCREENSHOTS]</span>
+      </div>
+
+      <div class="case-block reveal">
+        <h2>Limitations &amp; ethical considerations</h2>
+        <p>
+          {% if 'Medical' in project.status or 'medical' in project.outcome_line %}
+          This is an educational prototype and must not be used for real medical decisions. Predictions depend entirely on the quality and scope of the training data.
+          {% else %}
+          Results reflect the dataset and evaluation setup used during development and may not generalize beyond it. <span class="case-placeholder">[ADD KNOWN LIMITATIONS]</span>
+          {% endif %}
+        </p>
+      </div>
+
+      <div class="case-block reveal">
+        <h2>Future improvements</h2>
+        <span class="case-placeholder">[ADD PLANNED IMPROVEMENTS]</span>
+      </div>
+    </div>
+
+    <aside class="case-sidebar">
+      <div class="case-side-card reveal">
+        <h3>Tech stack</h3>
+        <div class="project-tech">
+          {% for t in project.tech %}<span>{{ t }}</span>{% endfor %}
+        </div>
+      </div>
+      <div class="case-side-card reveal">
+        <h3>Links</h3>
+        <div class="case-side-actions">
+          {% if project.github_url %}
+          <a class="btn btn-outline btn-small" href="{{ project.github_url }}" target="_blank" rel="noopener">{{ icon('github', 15) }}<span>Repository</span></a>
+          {% else %}
+          <span class="case-placeholder">[ADD REPOSITORY URL]</span>
+          {% endif %}
+          {% if project.demo_url %}
+          <a class="btn btn-primary btn-small" href="{{ project.demo_url }}" target="_blank" rel="noopener">{{ icon('external', 15) }}<span>Live Demo</span></a>
+          {% endif %}
+        </div>
+      </div>
+    </aside>
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,35 @@
+{% from "_icons.html" import icon %}
+<footer class="site-footer">
+  <div class="footer-inner">
+    <div class="footer-brand">
+      <span class="brand-mark">{{ profile.monogram }}</span>
+      <div>
+        <p class="footer-name">{{ profile.name }}</p>
+        <p class="footer-tagline">AI &amp; Machine Learning &middot; Data Analytics &middot; Python</p>
+      </div>
+    </div>
+
+    <nav class="footer-links" aria-label="Footer">
+      {% for link in nav_links %}
+      <a href="{{ url_for('index') }}#{{ link.id }}">{{ link.label }}</a>
+      {% endfor %}
+    </nav>
+
+    <div class="footer-social">
+      {% if profile.github_url %}
+      <a href="{{ profile.github_url }}" target="_blank" rel="noopener" aria-label="GitHub profile">{{ icon('github', 18) }}</a>
+      {% endif %}
+      {% if profile.linkedin_url %}
+      <a href="{{ profile.linkedin_url }}" target="_blank" rel="noopener" aria-label="LinkedIn profile">{{ icon('linkedin', 18) }}</a>
+      {% endif %}
+      <a href="mailto:{{ profile.email }}" aria-label="Email {{ profile.name }}">{{ icon('mail', 18) }}</a>
+    </div>
+  </div>
+
+  <div class="footer-bottom">
+    <p>&copy; {{ current_year }} {{ profile.name }}. Designed and developed by {{ profile.name }}.</p>
+    <button type="button" class="back-to-top" id="back-to-top" aria-label="Back to top">
+      {{ icon('arrow-up', 18) }}
+    </button>
+  </div>
+</footer>

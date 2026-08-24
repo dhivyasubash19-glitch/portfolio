@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{% block title %}Something Went Wrong | {{ site_meta.title }}{% endblock %}
+{% block content %}
+<div class="container">
+  <div class="error-page">
+    <p class="error-code">500</p>
+    <h1>Something went wrong on our end</h1>
+    <p>An unexpected error occurred. Please try again in a moment, or head back to the homepage.</p>
+    <a class="btn btn-primary" href="{{ url_for('index') }}">Back to Home</a>
+  </div>
+</div>
+{% endblock %}

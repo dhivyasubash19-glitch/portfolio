@@ -1,0 +1,320 @@
+{% extends "base.html" %}
+{% from "_icons.html" import icon %}
+
+{% block content %}
+
+<!-- ============ HERO ============ -->
+<section class="hero" id="home">
+  <div class="container hero-grid">
+    <div class="hero-copy">
+      <p class="hero-greeting">Hello, I'm S. Dhivya</p>
+      <h1 class="hero-title">AI &amp; ML Enthusiast <span class="accent">turning data into decisions</span></h1>
+      <p class="hero-tagline">{{ profile.hero_intro }}</p>
+
+      <div class="availability-badge"><span class="dot"></span> {{ profile.availability_badge }}</div>
+
+      <div class="hero-cta">
+        <a href="#projects" class="btn btn-primary">{{ icon('arrow-right', 16) }}<span>View My Projects</span></a>
+        <a href="{{ url_for('resume_download') }}" class="btn btn-outline">{{ icon('download', 16) }}<span>Download Resume</span></a>
+      </div>
+
+      <div class="hero-links">
+        {% if profile.github_url %}
+        <a class="btn-icon" href="{{ profile.github_url }}" target="_blank" rel="noopener" aria-label="GitHub profile">{{ icon('github', 18) }}</a>
+        {% endif %}
+        {% if profile.linkedin_url %}
+        <a class="btn-icon" href="{{ profile.linkedin_url }}" target="_blank" rel="noopener" aria-label="LinkedIn profile">{{ icon('linkedin', 18) }}</a>
+        {% endif %}
+        <a class="btn-icon" href="mailto:{{ profile.email }}" aria-label="Email {{ profile.name }}">{{ icon('mail', 18) }}</a>
+      </div>
+    </div>
+
+    <div class="hero-visual">
+      <div class="hero-portrait-wrap">
+        <div class="hero-portrait-ring" aria-hidden="true"></div>
+        <div class="hero-portrait">
+          <img src="{{ url_for('static', filename=profile.profile_photo) }}" alt="Portrait of {{ profile.name }}" width="360" height="360">
+        </div>
+        <div class="hero-node hero-node--1"><span class="dot"></span> preprocessing()</div>
+        <div class="hero-node hero-node--2"><span class="dot"></span> model.fit()</div>
+        <div class="hero-node hero-node--3"><span class="dot"></span> Flask &rarr; UI</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ ABOUT ============ -->
+<section id="about">
+  <div class="container">
+    <div class="section-head reveal">
+      <p class="eyebrow">About</p>
+      <h2 class="section-title">A little about me</h2>
+    </div>
+
+    <div class="about-grid">
+      <div class="reveal">
+        <p class="about-summary">{{ profile.about_summary }}</p>
+        <ul class="about-meta">
+          <li>{{ icon('pin', 16) }} {{ profile.location }}</li>
+          <li>{{ icon('cpu', 16) }} B.Tech AI &amp; Data Science &middot; Sudharsan Engineering College &middot; {{ education[0].year }}</li>
+          <li>{{ icon('check', 16) }} Languages: {{ profile.languages|join(', ') }}</li>
+        </ul>
+
+        <div class="value-grid">
+          {% for card in profile.value_cards %}
+          <div class="value-card">
+            <span class="value-icon">{{ icon(card.icon, 22) }}</span>
+            <h3>{{ card.title }}</h3>
+            <p>{{ card.text }}</p>
+          </div>
+          {% endfor %}
+        </div>
+      </div>
+
+      <div class="bring-list reveal">
+        <h3>What I bring</h3>
+        <ul>
+          {% for item in profile.what_i_bring %}
+          <li>{{ icon('check', 16) }}<span>{{ item }}</span></li>
+          {% endfor %}
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ SKILLS ============ -->
+<section id="skills">
+  <div class="container">
+    <div class="section-head reveal">
+      <p class="eyebrow">Skills</p>
+      <h2 class="section-title">Technical toolkit</h2>
+      <p class="section-sub">Grouped honestly by what I actually use -- editable in one data file, no guesswork percentages.</p>
+    </div>
+
+    <div class="skills-grid">
+      {% for group in skills %}
+      <div class="skill-group reveal">
+        <h3>{{ group.group }}</h3>
+        <div class="skill-tags">
+          {% for item in group['items'] %}<span class="skill-tag">{{ item }}</span>{% endfor %}
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<!-- ============ EXPERIENCE ============ -->
+<section id="experience">
+  <div class="container">
+    <div class="section-head reveal">
+      <p class="eyebrow">Experience</p>
+      <h2 class="section-title">Internships</h2>
+    </div>
+
+    <div class="timeline">
+      {% for job in experience %}
+      <div class="timeline-item reveal">
+        <span class="timeline-dot"></span>
+        <div class="timeline-card">
+          <h3>{{ job.role }}</h3>
+          <p class="timeline-org">{{ job.org }}</p>
+          <span class="timeline-duration">{{ job.duration }}</span>
+          <ul class="timeline-points">
+            {% for point in job.points %}<li>{{ point }}</li>{% endfor %}
+          </ul>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<!-- ============ PROJECTS ============ -->
+<section id="projects">
+  <div class="container">
+    <div class="section-head reveal">
+      <p class="eyebrow">Projects</p>
+      <h2 class="section-title">Featured work</h2>
+      <p class="section-sub">Case studies, not just cards -- each links through to problem, approach, and evidence.</p>
+    </div>
+
+    <div class="filter-bar reveal" role="group" aria-label="Filter projects by category">
+      {% for f in project_filters %}
+      <button type="button" class="filter-btn{% if loop.first %} is-active{% endif %}" data-filter="{{ f }}" aria-pressed="{{ 'true' if loop.first else 'false' }}">{{ f }}</button>
+      {% endfor %}
+    </div>
+
+    <div class="project-grid">
+      {% for project in projects %}
+      <article class="project-card reveal" data-category="{{ project.category }}">
+        <div class="project-cover">
+          {{ icon(project.cover_icon, 40) }}
+          <span class="project-status">{{ project.status }}</span>
+        </div>
+        <div class="project-body">
+          <p class="project-category">{{ project.category }}</p>
+          <h3>{{ project.title }}</h3>
+          <p class="project-subtitle">{{ project.subtitle }}</p>
+          <p class="project-problem">{{ project.problem }}</p>
+          <div class="project-tech">
+            {% for t in project.tech[:4] %}<span>{{ t }}</span>{% endfor %}
+          </div>
+          <div class="project-actions">
+            <a class="btn btn-small btn-primary" href="{{ url_for('project_detail', slug=project.slug) }}">Case Study</a>
+            {% if project.github_url %}
+            <a class="btn btn-small btn-outline" href="{{ project.github_url }}" target="_blank" rel="noopener">{{ icon('github', 15) }}<span>Code</span></a>
+            {% endif %}
+            {% if project.demo_url %}
+            <a class="btn btn-small btn-outline" href="{{ project.demo_url }}" target="_blank" rel="noopener">{{ icon('external', 15) }}<span>Live Demo</span></a>
+            {% endif %}
+          </div>
+        </div>
+      </article>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<!-- ============ EDUCATION ============ -->
+<section id="education">
+  <div class="container">
+    <div class="section-head reveal">
+      <p class="eyebrow">Education</p>
+      <h2 class="section-title">Academic background</h2>
+    </div>
+
+    <div class="education-grid">
+      {% for edu in education %}
+      <div class="education-card reveal{% if edu.highlight %} is-highlight{% endif %}">
+        <div>
+          <h3>{{ edu.degree }}</h3>
+          <p class="education-inst">{{ edu.institution }}</p>
+        </div>
+        <div class="education-right">
+          <div class="education-detail">{{ edu.detail }}</div>
+          <div class="education-year">{{ edu.year }}</div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<!-- ============ CERTIFICATIONS ============ -->
+<section id="certifications">
+  <div class="container">
+    <div class="section-head reveal">
+      <p class="eyebrow">Certifications &amp; Achievements</p>
+      <h2 class="section-title">Credentials</h2>
+    </div>
+
+    <div class="cert-grid">
+      {% for cert in certifications %}
+      <div class="cert-card reveal">
+        <span class="cert-icon">{{ icon('award', 22) }}</span>
+        <h3>{{ cert.title }}</h3>
+        <p class="cert-issuer">{{ cert.issuer }}</p>
+        {% if cert.date %}<p class="cert-date">{{ cert.date }}</p>{% endif %}
+        {% if cert.credential_url %}
+        <a class="btn btn-small btn-outline" href="{{ cert.credential_url }}" target="_blank" rel="noopener">View credential</a>
+        {% else %}
+        <span class="case-placeholder">[ADD CREDENTIAL LINK]</span>
+        {% endif %}
+      </div>
+      {% endfor %}
+    </div>
+
+    <div class="learning-strip reveal">
+      <h3>Currently learning</h3>
+      <div class="learning-tags">
+        {% for item in currently_learning %}<span>{{ item }}</span>{% endfor %}
+      </div>
+    </div>
+
+    <div class="github-panel reveal" style="margin-top: var(--space-6);">
+      <div>
+        <h3>GitHub &amp; learning journey</h3>
+        <p>Repositories, languages, and recent activity live on my GitHub profile -- this section will connect to live GitHub data once configured.</p>
+        {% if profile.github_url %}
+        <a class="btn btn-outline" href="{{ profile.github_url }}" target="_blank" rel="noopener">{{ icon('github', 16) }}<span>Visit GitHub Profile</span></a>
+        {% else %}
+        <span class="case-placeholder">[ADD GITHUB PROFILE URL]</span>
+        {% endif %}
+      </div>
+      <div class="terminal" aria-hidden="true">
+        <div class="terminal-bar"><span></span><span></span><span></span></div>
+        <div class="terminal-body">
+          <div><span class="prompt">&gt;&gt;&gt;</span> status = <span class="val">"open_to_work"</span></div>
+          <div><span class="prompt">&gt;&gt;&gt;</span> focus = <span class="val">"ML + Flask deployment"</span></div>
+          <div><span class="prompt">&gt;&gt;&gt;</span> next = <span class="val">"placement prep"</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ CONTACT ============ -->
+<section id="contact">
+  <div class="container">
+    <div class="section-head reveal">
+      <p class="eyebrow">Contact</p>
+      <h2 class="section-title">Let's talk about an opportunity</h2>
+      <p class="section-sub">Recruiter, mentor, or just curious about a project -- I'd love to hear from you.</p>
+    </div>
+
+    <div class="contact-grid">
+      <div class="reveal">
+        <div class="contact-info-list">
+          <a class="contact-info-item" href="mailto:{{ profile.email }}">
+            <span class="icon-box">{{ icon('mail', 18) }}</span>
+            <span><span class="label">Email</span><br><span class="value">{{ profile.email }}</span></span>
+          </a>
+          <a class="contact-info-item" href="tel:{{ profile.phone }}">
+            <span class="icon-box">{{ icon('phone', 18) }}</span>
+            <span><span class="label">Phone</span><br><span class="value">{{ profile.phone_display }}</span></span>
+          </a>
+          <div class="contact-info-item">
+            <span class="icon-box">{{ icon('pin', 18) }}</span>
+            <span><span class="label">Location</span><br><span class="value">{{ profile.location }}</span></span>
+          </div>
+        </div>
+      </div>
+
+      <form class="contact-form reveal" id="contact-form" action="{{ url_for('contact') }}" method="POST" novalidate>
+        <div class="form-row">
+          <div class="field" data-field="name">
+            <label for="cf-name">Name</label>
+            <input type="text" id="cf-name" name="name" autocomplete="name" required>
+            <p class="field-error" role="alert"></p>
+          </div>
+          <div class="field" data-field="email">
+            <label for="cf-email">Email</label>
+            <input type="email" id="cf-email" name="email" autocomplete="email" required>
+            <p class="field-error" role="alert"></p>
+          </div>
+        </div>
+        <div class="field" data-field="subject">
+          <label for="cf-subject">Subject</label>
+          <input type="text" id="cf-subject" name="subject" required>
+          <p class="field-error" role="alert"></p>
+        </div>
+        <div class="field" data-field="message">
+          <label for="cf-message">Message</label>
+          <textarea id="cf-message" name="message" required></textarea>
+          <p class="field-error" role="alert"></p>
+        </div>
+        <!-- honeypot -- left visually hidden, real users never fill this -->
+        <div class="field hp-field" aria-hidden="true">
+          <label for="cf-company">Company Website</label>
+          <input type="text" id="cf-company" name="company_website" tabindex="-1" autocomplete="off">
+        </div>
+        <button type="submit" class="btn btn-primary">{{ icon('mail', 16) }}<span>Send Message</span></button>
+        <p class="form-status" id="form-status" role="status"></p>
+      </form>
+    </div>
+  </div>
+</section>
+
+{% endblock %}

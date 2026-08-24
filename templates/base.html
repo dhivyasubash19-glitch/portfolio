@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>{% block title %}{{ site_meta.title }}{% endblock %}</title>
+<meta name="description" content="{% block description %}{{ site_meta.description }}{% endblock %}">
+{% if site_meta.canonical_url %}<link rel="canonical" href="{{ site_meta.canonical_url }}">{% endif %}
+
+<meta property="og:type" content="website">
+<meta property="og:title" content="{{ site_meta.title }}">
+<meta property="og:description" content="{{ site_meta.description }}">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="{{ site_meta.title }}">
+<meta name="twitter:description" content="{{ site_meta.description }}">
+
+<link rel="icon" href="{{ url_for('static', filename='images/favicon.svg') }}" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@500;600;700;800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+
+<script>
+  /* Set theme before paint to avoid flash-of-wrong-theme */
+  (function () {
+    var saved = localStorage.getItem('dhivya-theme');
+    var theme = saved || 'dark';
+    document.documentElement.setAttribute('data-theme', theme);
+  })();
+</script>
+
+{% block schema %}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Person",
+  "name": "{{ profile.name }}",
+  "jobTitle": "{{ profile.headline }}",
+  "email": "mailto:{{ profile.email }}",
+  "address": {
+    "@type": "PostalAddress",
+    "addressLocality": "Pudukkottai",
+    "addressRegion": "Tamil Nadu",
+    "addressCountry": "IN"
+  }
+}
+</script>
+{% endblock %}
+</head>
+<body>
+<a class="skip-link" href="#main-content">Skip to content</a>
+
+{% include "_nav.html" %}
+
+<main id="main-content">
+{% block content %}{% endblock %}
+</main>
+
+{% include "_footer.html" %}
+
+<script src="{{ url_for('static', filename='js/main.js') }}" defer></script>
+</body>
+</html>
